@@ -369,5 +369,8 @@ setInterval(()=>{
 },1000)
 
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js");
+  navigator.serviceWorker.register("./sw.js")
+    .then(() => console.log("Service Worker OK"))
+    .catch(err => console.error("SW erreur", err));
 }
+

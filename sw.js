@@ -1,20 +1,19 @@
+const CACHE_NAME = "match-foot-v1";
+const ASSETS = [
+  "./",
+  "./index.html",
+  "./style.css",
+  "./script.js",
+  "./manifest.json",
+  "./icon-192.png",
+  "./icon-512.png"
+];
+
 self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open("foot-app-v1").then(cache => {
-      return cache.addAll([
-        "./",
-        "./index.html",
-        "./style.css",
-        "./script.js"
-      ]);
-    })
-  );
+  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)));
 });
 
 self.addEventListener("fetch", event => {
-  event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
-    })
-  );
+  event.respondWith(caches.match(event.request).then(res => res || fetch(event.request)));
 });
+
