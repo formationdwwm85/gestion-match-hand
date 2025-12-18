@@ -1,12 +1,12 @@
-const CACHE_NAME = "match-foot-v1";
+const CACHE_NAME = "match-hand-v1";
 const ASSETS = [
-  "./",
-  "./index.html",
-  "./style.css",
-  "./script.js",
-  "./manifest.json",
-  "./icon-192.png",
-  "./icon-512.png"
+  "https://formationdwwm85.github.io/gestion-match-hand//",
+  "https://formationdwwm85.github.io/gestion-match-hand//index.html",
+  "https://formationdwwm85.github.io/gestion-match-hand//style.css",
+  "https://formationdwwm85.github.io/gestion-match-hand//script.js",
+  "https://formationdwwm85.github.io/gestion-match-hand//manifest.json",
+  "https://formationdwwm85.github.io/gestion-match-hand//icon-192.png",
+  "https://formationdwwm85.github.io/gestion-match-hand//icon-512.png"
 ];
 
 self.addEventListener("install", event => {

@@ -1,7 +1,7 @@
 {
-  "name": "Gestion Match Foot",
-  "short_name": "Match Foot",
-  "start_url": ".",
+  "name": "Gestion Match Hand",
+  "short_name": "Match Hand",
+  "start_url": "https://formationdwwm85.github.io/gestion-match-hand/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#e63946",
