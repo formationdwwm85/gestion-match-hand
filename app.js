@@ -109,10 +109,14 @@ liste_players.forEach(j=>{
 
     let bouton=document.createElement("button");
     bouton.textContent=j.nom;
+    bouton.classList.add("btn-player");
     div_depart.appendChild(bouton);
     bouton.addEventListener("click",()=>{
-        players.push(j);
-        bouton.style.backgroundColor="red"
+        if(players.includes(j)){
+            alert("Le joueur est déjà dans la liste des joueurs présents")
+        }else{players.push(j);
+        bouton.style.backgroundColor="red"}
+        
     });
 })
 valid=document.getElementById("valid_joueur")
@@ -124,6 +128,7 @@ valid.addEventListener("click", () => {
 
         const element = document.createElement("button");
         element.id = joueur.nom;
+        element.classList.add("ajout_joueur_terrain")
         element.textContent = joueur.nom;
 
         element.addEventListener("click", () => {
@@ -183,7 +188,7 @@ function demarrer(){
         defilerTemps();
         afficherJoueurs();
         affich_temps();
-        }
+         }
     intervalTempsJeu = setInterval(() => {
             players.forEach(joueur => {
                 if(joueur.onField){
@@ -200,8 +205,8 @@ function arreter(){
         estArrete=true;
         clearTimeout(timeout)
         clearInterval(intervalTempsJeu);
-        clearTimeout(timeoutPremiereProposition);
-        clearInterval(intervalProposition);
+       /* clearTimeout(timeoutPremiereProposition);
+        clearInterval(intervalProposition);*/
     }
 }
 function defilerTemps(){
@@ -320,9 +325,9 @@ function afficherJoueurs(){
             
         }
 
-        // ⚠️ L’eventListener ne doit appeler que clicJoueur(joueur), pas verifierChangement()
         btn.addEventListener("click", () => selectionJoueur(joueur));
     });
+    
 }
 
 function affich_temps(){
@@ -348,25 +353,43 @@ function affich_temps(){
 
             divTemps.textContent =
                 `${label} : ${tps.toFixed(2)} min | Temps total joué : ${tps_tot.toFixed(2)} min`;
-        });
-        
-    },1000);
-}
-
-   
-
-
-
-setInterval(()=>{
-    for(i in players){
-        if(players[i].tps_dep_derniere_entree!==0){
-            console.log((players[i].nom),"Le joueur est entré il y a ",(players[i].tps_dep_derniere_entree))
-        }else{
-            console.log((players[i].nom),"Le joueur est sorti il y a",(players[i].tps_banc))
-        }
-        
+     })  },1000);
     }
-},1000)
+var zero=document.getElementById("zero")
+zero.addEventListener("click",()=>{
+    chrono.textContent="00:00:00";
+    
+    heures=0;
+    minutes=0;
+    secondes=0;
+    liste_players.forEach(joueur=>{
+        if(joueur.nom!=="Eglantine"){
+            joueur.onField=false
+        }
+        joueur.timePlayed=0;
+        joueur.tps_dep_derniere_entree=0;
+        joueur.tps_banc=0;
+        
+    })
+    afficherJoueurs();
+    arreter();
+    document.querySelectorAll("#depart .btn-player").forEach(btn => {
+    btn.style.backgroundColor = "white";
+   
+});
+
+    document.getElementById("container").innerHTML = "";
+    document.getElementById("liste_joueur_terrain").innerHTML = "";
+    document.getElementById("liste_banc").innerHTML = "";
+    const sup = document.getElementById("joueur_terrain");
+            if (sup) sup.remove();
+    players=[];
+    liste_jo_terrain=[];
+    liste_jo_banc=[];
+    liste_joueur=[];
+
+})
+        
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("./sw.js")
