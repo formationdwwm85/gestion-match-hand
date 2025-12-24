@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aide au changement</title>
+    <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js');
+  }
+</script>
+
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#e63946">
     <link rel="stylesheet" href="style.css">
@@ -42,7 +48,7 @@
         Pour effectuer un changement cliquez sur le joueur à faire sortir et le joueur à faire entrer
      </div>
      <div>
-        
+
      </div>
     <div id="liste_joueur_terrain"></div>
     </div>

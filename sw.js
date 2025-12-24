@@ -1,14 +1,12 @@
-const BASE="https://formationdwwm85.github.io/gestion-match-hand"
-const CACHE_NAME = "coach-app-v4";
-
+const CACHE_NAME = "gestion-match-hand-v1";
 const FILES = [
-  BASE + "/",
-  BASE + "/index.html",
-  BASE + "/style.css",
-  BASE + "/script.js",
-  BASE + "/manifest.json",
-  BASE + "/icon-192.png",
-  BASE + "/icon-512.png"
+  "./",
+  "./index.html",
+  "./style.css",
+  "./app.js",
+  "./manifest.json",
+  "./icon-192.png",
+  "./icon-512.png"
 ];
 
 self.addEventListener("install", e => {
@@ -22,8 +20,8 @@ self.addEventListener("activate", e => {
   e.waitUntil(
     caches.keys().then(keys => {
       return Promise.all(
-        keys.map(k => {
-          if (k !== CACHE_NAME) return caches.delete(k);
+        keys.map(key => {
+          if (key !== CACHE_NAME) return caches.delete(key);
         })
       );
     })
