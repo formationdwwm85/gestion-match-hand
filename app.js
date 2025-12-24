@@ -244,10 +244,10 @@ joueurEntrant = null;
 function clicJoueur(joueur){
     if (joueur.onField) {
         joueurSortant = joueur;
-        console.log("Sortant :", joueur.nom);
+        
     } else {
         joueurEntrant = joueur;
-        console.log("Entrant :", joueur.nom);
+        
     }
 
     verifierChangement();
@@ -325,7 +325,11 @@ function afficherJoueurs(){
             
         }
 
-        btn.addEventListener("click", () => selectionJoueur(joueur));
+        btn.addEventListener("click", () =>{
+            selectionJoueur(joueur);
+            btn.style.backgroundColor="yellow"
+            btn.style.color="black"
+        })
     });
     
 }
