@@ -1,12 +1,14 @@
-const CACHE_NAME = "coach-app-v1";   // 🔥 change à chaque mise à jour
+const BASE="https://formationdwwm85.github.io/gestion-match-hand"
+const CACHE_NAME = "coach-app-v4";
+
 const FILES = [
-  "./",
-  "./index.html",
-  "./style.css",
-  "./script.js",
-  "./manifest.json",
-  "./icon-192.png",
-  "./icon-512.png"
+  BASE + "/",
+  BASE + "/index.html",
+  BASE + "/style.css",
+  BASE + "/script.js",
+  BASE + "/manifest.json",
+  BASE + "/icon-192.png",
+  BASE + "/icon-512.png"
 ];
 
 self.addEventListener("install", e => {
