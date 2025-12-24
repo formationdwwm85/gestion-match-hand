@@ -1,19 +1,37 @@
-const CACHE_NAME = "match-hand-v1";
-const ASSETS = [
-  "https://formationdwwm85.github.io/gestion-match-hand//",
-  "https://formationdwwm85.github.io/gestion-match-hand//index.html",
-  "https://formationdwwm85.github.io/gestion-match-hand//style.css",
-  "https://formationdwwm85.github.io/gestion-match-hand//script.js",
-  "https://formationdwwm85.github.io/gestion-match-hand//manifest.json",
-  "https://formationdwwm85.github.io/gestion-match-hand//icon-192.png",
-  "https://formationdwwm85.github.io/gestion-match-hand//icon-512.png"
-];
+const CACHE_NAME = "app-v2";   // 🔥 change la version à chaque mise à jour
 
-self.addEventListener("install", event => {
-  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)));
+self.addEventListener("install", e => {
+    self.skipWaiting();
+    e.waitUntil(
+        caches.open(CACHE_NAME).then(cache => {
+            return cache.addAll([
+                "./",
+                "./index.html",
+                "./style.css",
+                "./script.js"
+            ]);
+        })
+    );
 });
 
-self.addEventListener("fetch", event => {
-  event.respondWith(caches.match(event.request).then(res => res || fetch(event.request)));
+self.addEventListener("activate", e => {
+    e.waitUntil(
+        caches.keys().then(keys => {
+            return Promise.all(
+                keys.map(key => {
+                    if (key !== CACHE_NAME) {
+                        return caches.delete(key);
+                    }
+                })
+            );
+        })
+    );
+    self.clients.claim();
+});
+
+self.addEventListener("fetch", e => {
+    e.respondWith(
+        fetch(e.request).catch(() => caches.match(e.request))
+    );
 });
 
