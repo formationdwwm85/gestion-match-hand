@@ -1,6 +1,7 @@
 #valid_joueur{
-    margin: 10px;
-    height: 20px;
+    margin: 20px;
+    height: 30px;
+    width: auto;
 }
 .btn-player{
     margin-right: 8px;

@@ -99,6 +99,7 @@ const liste_players=[{
     tps_banc:0
 }];
 
+liste_tampon=[]
 players=[]
 liste_joueur=[]
 liste_jo_terrain=[]
@@ -112,9 +113,9 @@ liste_players.forEach(j=>{
     bouton.classList.add("btn-player");
     div_depart.appendChild(bouton);
     bouton.addEventListener("click",()=>{
-        if(players.includes(j)){
+        if(liste_tampon.includes(j)){
             alert("Le joueur est déjà dans la liste des joueurs présents")
-        }else{players.push(j);
+        }else{liste_tampon.push(j);
         bouton.style.backgroundColor="red"}
         
     });
@@ -122,7 +123,11 @@ liste_players.forEach(j=>{
 valid=document.getElementById("valid_joueur")
 valid.addEventListener("click", () => {
 
-    players.forEach(joueur => {
+    if(players.length!=0){
+        alert("Vous avez déjà validé les joueurs présent")
+    }else{
+        players=liste_tampon
+        players.forEach(joueur => {
 
         liste_joueur.push(joueur.nom);
 
@@ -162,7 +167,8 @@ valid.addEventListener("click", () => {
         });
 
         document.getElementById("container").appendChild(element);
-    });
+    });}
+    
 });
 
 
