@@ -306,6 +306,12 @@ function afficherJoueurs(){
 
     terrainDiv.innerHTML = "";
     bancDiv.innerHTML = "";
+    const terrain = players.filter(j => j.onField && !j.isGoalKeeper);
+    const maxTerrain = Math.max(...terrain.map(j => j.tps_dep_derniere_entree));
+    const joueur_max_temps = terrain.filter(
+        j => j.tps_dep_derniere_entree === maxTerrain
+    );
+     
 
     players.forEach(joueur => {
 
@@ -321,8 +327,9 @@ function afficherJoueurs(){
         bloc.appendChild(temps);
          
         if(joueur.onField){
+           
             terrainDiv.appendChild(bloc);
-            btn.style.backgroundColor = "red";
+             if(joueur_max_temps.includes(joueur)){btn.style.backgroundColor = "red";}else{btn.style.backgroundColor = "green";}
             btn.style.color="white";
             
         } else {
