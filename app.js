@@ -401,6 +401,7 @@ zero.addEventListener("click",()=>{
     document.getElementById("liste_banc").innerHTML = "";
     const sup = document.getElementById("joueur_terrain");
             if (sup) sup.remove();
+    liste_tampon=[];
     players=[];
     liste_jo_terrain=[];
     liste_jo_banc=[];
