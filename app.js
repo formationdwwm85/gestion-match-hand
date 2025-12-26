@@ -235,6 +235,7 @@ function defilerTemps(){
     if(minutes<10){
         minutes="0"+minutes
     }
+    if(minutes==30&&secondes==0){arreter()}
     chrono.textContent=`${heures}:${minutes}:${secondes}`;
     timeout=setTimeout(defilerTemps,1000);
 }
