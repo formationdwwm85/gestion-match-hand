@@ -1,68 +1,56 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aide au changement</title>
-    <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js');
-  }
-</script>
+  <meta charset="UTF-8" />
+  <title>Gestion Match Hand</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#e63946">
-    <link rel="stylesheet" href="style.css">
-    <script src="app.js" defer></script>
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#e63946">
+
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js")
+          .then(() => console.log("Service Worker enregistré"))
+          .catch(err => console.error("Erreur SW", err));
+      });
+    }
+  </script>
 </head>
+
 <body>
 
-    <div>Sélectionnez les joueurs présents</div>
-    <div id="depart"></div>
-    <button id="valid_joueur">valider</button>
-    <div>
-        <p>Liste des joueurs présents</p>
-        <div id="container"></div>
-        <p>Cliquez sur le joueur que vous désirez faire entrer sur le terrain</p>
-        
-        <p>Les joueurs sur le terrain sont:</p>
-        <div id="liste_terrain"></div>
-        <div id="terrain">
-    
-    
-        <p>Temps joué:</p>
-    </div>
-    <div id="wrapper">
-        <div id="chrono">00:00:00</div>
-        <div id="buttons">
-            
-            <button id="start" class="button">Start</button>
-            <button id="stop" class="button">Pause</button>
-            
-        </div>
-    </div>
-     
-    
-<h2>Terrain</h2>
-    <div id="instuction_changement">
-        Pour effectuer un changement cliquez sur le joueur à faire sortir et le joueur à faire entrer
-     </div>
-     <div>
+  <h2>Sélection des joueurs présents</h2>
+  <div id="depart"></div>
+  <button id="valid_joueur">Valider les joueurs</button>
 
-     </div>
-    <div id="liste_joueur_terrain"></div>
-    </div>
+  <h3>Joueurs disponibles</h3>
+  <div id="container"></div>
 
-    <div id="banc">
-        <h2>Banc</h2>
-        <div id="liste_banc"></div>
-    </div>
-    </div>
-    
-<div id="proposition"></div>
+  <h3>Joueurs sur le terrain (au début du match)</h3>
+  <div id="liste_terrain"></div>
 
-<button id="zero">Remise à zéro</button>
+  <div id="wrapper">
+    <div id="chrono">00:00:00</div>
+    <div id="buttons">
+      <button id="start" class="button">Start</button>
+      <button id="stop" class="button">Pause</button>
+    </div>
+  </div>
 
-    
+  <h2>Terrain</h2>
+  <p>Pour faire un changement, cliquez sur un joueur sortant puis un joueur entrant</p>
+  <div id="liste_joueur_terrain"></div>
+
+  <h2>Banc</h2>
+  <div id="liste_banc"></div>
+
+  <button id="zero">Remise à zéro</button>
+
 </body>
 </html>
