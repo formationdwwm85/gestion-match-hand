@@ -104,6 +104,12 @@ players=[]
 liste_joueur=[]
 liste_jo_terrain=[]
 liste_jo_banc=[]
+let dernierChangement = Date.now();
+const DELAI_RAPPEL = 3 * 60 * 1000; 
+let beep = new Audio("alerte_changement.mp3");
+let audioAutorise = false;
+
+
 div_depart=document.getElementById("depart")
 
 liste_players.forEach(j=>{
@@ -203,6 +209,16 @@ function demarrer(){
                 }else{
                     joueur.tps_banc+=1/60
                 }});},1000);
+
+    setInterval(verifierRappel, 10000);
+
+    beep.play().then(() => {
+    beep.pause();
+    beep.currentTime = 0;
+    audioAutorise = true;
+}).catch(()=>{});
+
+
     }
 
 
@@ -295,6 +311,7 @@ function effectuerChangement(sortant, entrant){
 
     liste_jo_banc = liste_jo_banc.filter(j => j !== entrant);
     liste_jo_banc.push(sortant);
+    dernierChangement=Date.now();
 
     // 🔹 Mise à jour de l’affichage sans ré-appeler clicJoueur
     afficherJoueurs();
@@ -408,6 +425,22 @@ zero.addEventListener("click",()=>{
     liste_joueur=[];
 
 })
+
+function verifierRappel() {
+    const maintenant = Date.now();
+    if (maintenant - dernierChangement > DELAI_RAPPEL) {
+        jouerBip();
+        dernierChangement = maintenant; // évite les bips en boucle
+    }
+}
+
+function jouerBip(){
+    if(!audioAutorise) return;
+    beep.currentTime = 0;
+    beep.play();
+}
+
+
         
 
 if ("serviceWorker" in navigator) {
