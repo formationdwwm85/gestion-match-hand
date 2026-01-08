@@ -445,7 +445,7 @@ function jouerBip(){
         
 
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("./sw.js")
+  navigator.serviceWorker.register("/gestion-match-hand/sw.js")
     .then(() => console.log("Service Worker OK"))
     .catch(err => console.error("SW erreur", err));
 }
