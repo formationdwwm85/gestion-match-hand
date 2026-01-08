@@ -104,7 +104,7 @@ players=[]
 liste_joueur=[]
 liste_jo_terrain=[]
 liste_jo_banc=[]
-let dernierChangement = Date.now();
+let dernierChangement =null;
 const DELAI_RAPPEL = 3 * 60 * 1000; 
 let beep = new Audio("alerte_changement.mp3");
 let audioAutorise = false;
@@ -427,6 +427,7 @@ zero.addEventListener("click",()=>{
 })
 
 function verifierRappel() {
+    if(!dernierChangement) return;
     const maintenant = Date.now();
     if (maintenant - dernierChangement > DELAI_RAPPEL) {
         jouerBip();
