@@ -1,50 +1,36 @@
-const CACHE_NAME = "gestion-match-hand-v2";
+const CACHE_NAME = "gestion-match-hand-v3";
+
+const BASE = "/gestion-match-hand/";
 
 const FILES = [
-  "./",
-  "./index.html",
-  "./style.css",
-  "./app.js",
-  "./manifest.json",
-  "./icon-192.png",
-  "./icon-512.png"
+  BASE,
+  BASE + "index.html",
+  BASE + "style.css",
+  BASE + "app.js",
+  BASE + "manifest.json",
+  BASE + "alerte_changement.mp3",
+  BASE + "icon-192.png",
+  BASE + "icon-512.png"
 ];
 
-// Installation
-self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(FILES);
-    })
-  );
+self.addEventListener("install", e => {
   self.skipWaiting();
+  e.waitUntil(
+    caches.open(CACHE_NAME).then(cache => cache.addAll(FILES))
+  );
 });
 
-// Activation (nettoyage anciens caches)
-self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys().then(keys => {
-      return Promise.all(
-        keys.map(key => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
-        })
-      );
-    })
+self.addEventListener("activate", e => {
+  e.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.map(k => k !== CACHE_NAME && caches.delete(k)))
+    )
   );
   self.clients.claim();
 });
 
-// Interception réseau → offline fallback
-self.addEventListener("fetch", event => {
-  event.respondWith(
-    fetch(event.request)
-      .then(res => {
-        return res;
-      })
-      .catch(() => {
-        return caches.match(event.request);
-      })
+self.addEventListener("fetch", e => {
+  e.respondWith(
+    fetch(e.request).catch(() => caches.match(e.request))
   );
 });
