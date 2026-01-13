@@ -104,7 +104,10 @@ players=[]
 liste_joueur=[]
 liste_jo_terrain=[]
 liste_jo_banc=[]
+let modeBlessure = false;
+let joueurBlesse = null;
 let dernierChangement =null;
+let intervalRappel = null;
 const DELAI_RAPPEL = 3 * 60 * 1000; 
 let beep = new Audio("alerte_changement.mp3");
 let audioAutorise = false;
@@ -210,7 +213,10 @@ function demarrer(){
                     joueur.tps_banc+=1/60
                 }});},1000);
 
-    setInterval(verifierRappel, 10000);
+   if(!intervalRappel){
+    intervalRappel = setInterval(verifierRappel, 10000);
+}
+
 
     beep.play().then(() => {
     beep.pause();
@@ -227,6 +233,12 @@ function arreter(){
         estArrete=true;
         clearTimeout(timeout)
         clearInterval(intervalTempsJeu);
+        
+        if(intervalRappel){
+    clearInterval(intervalRappel);
+    intervalRappel = null;
+}
+
        /* clearTimeout(timeoutPremiereProposition);
         clearInterval(intervalProposition);*/
     }
@@ -264,33 +276,58 @@ stopBtn.addEventListener("click",arreter)
 joueurSortant = null;
 joueurEntrant = null;
 
-function clicJoueur(joueur){
-    if (joueur.onField) {
-        joueurSortant = joueur;
-        
-    } else {
-        joueurEntrant = joueur;
-        
-    }
-
-    verifierChangement();
-}
-
-function verifierChangement(){
-    if (joueurSortant && joueurEntrant) {
-        effectuerChangement(joueurSortant, joueurEntrant);
-        joueurSortant = null;
-        joueurEntrant = null;
-    }
-}
-
 function selectionJoueur(joueur){
+
+    // 🩹 MODE BLESSURE
+    if(modeBlessure){
+
+        // 1️⃣ Sélection du joueur indisponible
+        if(!joueurBlesse){
+            joueurBlesse = joueur;
+
+            // S'il était déjà sur le banc → il sort définitivement
+            if(!joueur.onField){
+                players = players.filter(j => j !== joueurBlesse);
+                liste_jo_banc = liste_jo_banc.filter(j => j !== joueurBlesse);
+
+                joueurBlesse = null;
+                modeBlessure = false;
+                afficherJoueurs();
+                return;
+            }
+
+            // S'il était sur le terrain → il faut un remplaçant
+            alert(joueur.nom + " est indisponible. Choisis un remplaçant sur le banc.");
+            return;
+        }
+
+        // 2️⃣ Choix du remplaçant
+        if(joueur.onField){
+            alert("Le remplaçant doit être sur le banc");
+            return;
+        }
+
+        // 3️⃣ Changement
+        effectuerChangement(joueurBlesse, joueur);
+
+        // 4️⃣ Le blessé sort du match
+        
+        players = players.filter(j => j !== joueurBlesse);
+        liste_jo_terrain = liste_jo_terrain.filter(j => j !== joueurBlesse);
+        liste_jo_banc = liste_jo_banc.filter(j => j !== joueurBlesse);
+            
+        joueurBlesse = null;
+        modeBlessure = false;
+        afficherJoueurs();
+        
+        return;
+    }
+
+    
     if(joueur.onField){
         joueurSortant = joueur;
-        console.log("Sortant :", joueur.nom);
     } else {
         joueurEntrant = joueur;
-        console.log("Entrant :", joueur.nom);
     }
 
     if(joueurSortant && joueurEntrant){
@@ -300,7 +337,9 @@ function selectionJoueur(joueur){
     }
 }
 
+
 function effectuerChangement(sortant, entrant){
+
     sortant.onField = false;
     sortant.tps_dep_derniere_entree=0;
     entrant.onField = true;
@@ -313,7 +352,6 @@ function effectuerChangement(sortant, entrant){
     liste_jo_banc.push(sortant);
     dernierChangement=Date.now();
 
-    // 🔹 Mise à jour de l’affichage sans ré-appeler clicJoueur
     afficherJoueurs();
 }
 
@@ -410,7 +448,10 @@ zero.addEventListener("click",()=>{
     arreter();
     document.querySelectorAll("#depart .btn-player").forEach(btn => {
     btn.style.backgroundColor = "white";
-   
+
+    dernierChangement = null;
+    beep.pause();
+    beep.currentTime = 0;
 });
 
     document.getElementById("container").innerHTML = "";
@@ -427,6 +468,8 @@ zero.addEventListener("click",()=>{
 })
 
 function verifierRappel() {
+
+    if(estArrete) return;
     if(!dernierChangement) return;
     const maintenant = Date.now();
     if (maintenant - dernierChangement > DELAI_RAPPEL) {
@@ -442,11 +485,21 @@ function jouerBip(){
 }
 
 
-        
+
+
+const blessure = document.getElementById("blessure");
+
+blessure.addEventListener("click", () => {
+    modeBlessure = true;
+    joueurBlesse = null;
+    alert("Clique sur le joueur indisponible");
+});
+
+
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("/gestion-match-hand/sw.js")
-    .then(() => console.log("Service Worker OK"))
+    .then(() => console.log("SW OK"))
     .catch(err => console.error("SW erreur", err));
 }
 
